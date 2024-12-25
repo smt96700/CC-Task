@@ -5,7 +5,7 @@ function PageOne(){
     useEffect(()=> {
          async function fetchData(){
             try {
-                const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_URL}/api/page-one`);
+                const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_URL}/app/api/page-one`);
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }

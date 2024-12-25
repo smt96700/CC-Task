@@ -7,7 +7,7 @@ function Home() {
                 Welcome to the App
             </h1>
             <img 
-                src="/hello.jpg" 
+                src="/app/hello.jpg" 
                 alt="Welcome" 
                 height={"200px"}
                 width={"200px"}
