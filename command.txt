@@ -1,0 +1,80 @@
+# inside my Main-App
+ //on instance
+   sudo mkdir -p /var/www/sumit-verma.me
+   sudo chown -R ubuntu:ubuntu /var/www/sumit-verma.me
+
+ 
+ sudo mkdir /var/www/sumit
+ //host machine
+  npm run build
+  scp -i ~/Downloads/serverInstanceKey.pem -r dist/* ubuntu@52.66.76.223:/var/www/sumit-verma.me/
+  
+  //nginx configuration
+  sudo nano /etc/nginx/sites-available/sumit-verma.me
+  sudo ln -s /etc/nginx/sites-available/sumit-verma.me /etc/nginx/sites-enabled/
+  sudo nginx -t
+  sudo systemctl restart nginx
+  
+  
+  #backend deploy
+  
+   mkdir server-side
+   //initialise the project
+   sudo npm install pm2 -g
+   pm2 start index.js
+   pm2 startup
+   pm2 save
+   sudo nano /etc/nginx/sites-available/sumit-verma.me
+   sudo nginx -t
+   sudo systemctl reload nginx
+   
+  #frontend deploy
+   //on instance
+   sudo mkdir -p /var/www/sumit-verma.me/app/
+   sudo chown -R ubuntu:ubuntu /var/www/sumit-verma.me/app/
+   
+   //host machine
+     npm run build
+     scp -i ~/Downloads/serverInstanceKey.pem -r dist/* ubuntu@52.66.76.223:/var/www/sumit-verma.me/app/
+     
+   //nginx config
+     sudo nano /etc/nginx/sites-available/sumit-verma.me
+     sudo nginx -t
+     sudo nginx reload nginx
+     
+   //for ssl certificate
+   sudo apt install certbot python3-certbot-nginx -y
+   sudo certbot --nginx -d sumit-verma.me -d www.sumit-verma.me
+   sudo certbot renew --dry-run
+  
+ 
+  #nginx config file
+  server {
+    listen 80;
+    server_name sumit-verma.me www.sumit-verma.me;
+
+    location / {
+        root /var/www/sumit-verma.me;
+        index index.html;
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /app/ {
+        alias /var/www/sumit-verma.me/app/;
+        index index.html;
+        try_files $uri $uri/ /app/index.html;
+    }
+
+    location /app/api/ {
+        proxy_pass http://localhost:3000/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+   
+   
+ 
