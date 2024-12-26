@@ -6,7 +6,7 @@ function PageTwo(){
              async function fetchData(){
                 try {
                     
-                    const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_URL}/app/api/page-two`);
+                    const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_URL}/page-two`);
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
                         }
