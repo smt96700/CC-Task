@@ -12,11 +12,11 @@ app.use(cors({
 }));
 
 
-app.get('/app/api/page-one', (req, res) => {
+app.get('/page-one', (req, res) => {
   res.json({message:'Welcome to Page One'});
 });
 
-app.get('/app/api/page-two', (req, res) => {
+app.get('/page-two', (req, res) => {
     res.json({message:'Welcome to Page Two'});
 });
 
